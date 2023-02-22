@@ -1,0 +1,12 @@
+{
+    "scripts": {
+      "commands": "node deploy-commands.js",
+      "bot": "node index.js",
+      "dev": "node deploy-commands.js && node index.js"
+    },
+    "dependencies": {
+      "discord.js": "^14.7.1",
+      "dotenv": "^16.0.3",
+      "moment": "^2.29.4"
+    }
+  }
