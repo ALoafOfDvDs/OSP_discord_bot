@@ -1,2 +1,5 @@
 # Discord Token and Private Variables
 .env
+
+# Node modules
+/node_modules
