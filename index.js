@@ -63,7 +63,7 @@ client.on(Events.InteractionCreate, async interaction => {
 		}
 		catch (error) {
 			console.error(error);
-			await interaction.reply({ content: 'Something fucked up homie', ephemeral: true });
+			await interaction.reply({ content: 'Command failed', ephemeral: true });
 		}
 	}
 	else {
