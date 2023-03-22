@@ -74,5 +74,27 @@ client.on(Events.InteractionCreate, async interaction => {
 });
 
 
-console.log(process.env.DISCORD_TOKEN);
+const {google} = require('googleapis');
+
+const sheet = google.sheets({
+	version:"v4",
+	auth: process.env.GOOGLE_API_KEY
+});
+
+const params = {
+	spreadsheetId: process.env.GOOGLE_TEST_SHEET_ID
+};
+
+sheet.spreadsheets.get(params, (err, res) => {
+	if (err) {
+		console.error(err);
+		throw err;
+	}
+	if(res) {
+		console.log(res);
+		// console.log(`the sheet url is ${res.data.url}`);
+	}
+});
+
+
 client.login(process.env.DISCORD_TOKEN);

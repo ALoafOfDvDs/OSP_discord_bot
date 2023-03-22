@@ -3,8 +3,13 @@ const { ActionRowBuilder,
         EmbedBuilder, 
         SlashCommandBuilder } 
         = require('discord.js');
+
+const { newSheetRow } = require('../handlers/sheetinteraction');
 var moment = require('moment');
 moment().format();
+
+// const {authenticate} = require('@google-cloud/local-auth');
+const {google} = require('googleapis');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -46,25 +51,17 @@ module.exports = {
 
             .setFooter({text: `Sent by ${interaction.user.username} (${interaction.user.id})`});
         await interaction.channel.send('For the time being this message is sent in the current channel. This will be changed as we move closer to implementing this server-wide');
-        await interaction.channel.send({embeds:[embedV1], components: [row]});
+        const mod_message = await interaction.channel.send({embeds:[embedV1], components: [row]});
+
+        try {
+            console.log(interaction);
+            await newSheetRow(mod_message.id, interaction);
+        }
+        catch (error) {
+            console.log(error);
+            interaction.channel.send("failed to update google sheet");
+        }
         const m = interaction.editReply({content: 'message has been edited to say this instead', ephemeral: true});
-        // await m.edit('message has been edited to say this instead');
-        /*
-        const embedV2 = new EmbedBuilder()
-            .setAuthor({name: `${interaction.user.username}`, iconURL: `${link}`})
-            .addFields({text: `**Reported** ${user.username} (ID ${user.id})\n`
-                              `**Reason: ${reason}`
-                              `**Channel:** ${interaction.channel}`});
-        // await interaction.channel.send({embeds:[embedV2]});
-        await interaction.channel.send({embeds: [embedV2]});
-
-        */
-        // await interaction.channel.send(`?modlogs ${user.id}`);
-
-        // setTimeout(console.log("waiting"), 1000); // delays 1 second
-        // setTimeout(()=>{}, 1000);
-        
-        // await interaction.channel.send(`?notes ${user.id}`);
 	},
         
 };

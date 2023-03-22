@@ -6,12 +6,13 @@ const { ActionRowBuilder,
 const fs = require('node:fs');
 const path = require('node:path');
 const env = require('dotenv');
-
+const {getSheetValue} = require('./sheetinteraction.js');
 module.exports = {
     ButtonInteraction(interaction) {
         if (interaction.customId === 'report_seen' && interaction.message.author.id === process.env.CLIENT_ID) {
             // clicked a button with the report seen id that was sent by my bot
             // this means I need to edit the original ephemeral message
+            getSheetValue(interaction.message.id);
             console.log('this is the button for marking a report as seen and needs to edit the original ephemeral message for the /report command');
         }
         if (interaction.customId === 'deliberate') {
