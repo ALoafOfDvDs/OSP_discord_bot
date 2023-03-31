@@ -15,9 +15,23 @@ It will index through its slash (/) commands and console log errors for any comm
 ## deploy-commands.js
 This file runs a script that will read through the entire "Commands" folder for every JavaScript file, and export the commands to a JSON file for index.js to read
 
+## handlers
+### buttonhandler.js
+This module is called by the main file when a button interaction is received. It determines what button has been pressed and contains all logic that is run when a button is pressed. 
+
+### sheetinteraction.js
+This module is used to interact with a google sheet. The interactions with the google sheet are currently hardcoded so it interacts with a particular sheet. This is necessary to allow the "/report" command to work fully, as it relies on a google sheet as a database to store and track specific data. 
+
+### slashcommandhandler.js
+This module is unnecessary and will be removed. 
+
 ## Commands
 ### report.js
 Implementation of the "/report" command. This will allow a user to report another user
 
 ### getlogs.js
 Implementation of the "/getlogs" command. This will allow a moderator to retrieve all logs of previous infractions of a particular user
+
+### modreport.js
+Implementation of the "/modreport" command. This creates an embed to help moderators keep track of what case they are handling, as well as who is participating in the deliberation process
+
