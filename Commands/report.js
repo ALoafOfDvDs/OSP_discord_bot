@@ -50,12 +50,11 @@ module.exports = {
         const mod_message = await interaction.channel.send({embeds:[embedV1], components: [row]});
 
         try {
-            console.log(interaction.token);
             await newSheetRow(mod_message.id, interaction.token);
         }
         catch (error) {
             console.log(error);
-            interaction.channel.send("failed to update google sheet");
+            interaction.channel.send("failed to update google sheet"); // probably change this for the final product
         }
 
 	},

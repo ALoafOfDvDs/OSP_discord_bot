@@ -37,7 +37,6 @@ module.exports = {
                 if(rows[i][0] === messageId) {
                     // then it may be to my advantage to delete this entry here to keep the size of the 
                     // sheet small, unless I can somehow start archiving things after 15 minutes
-                    console.log(rows[i][1]);
                     return rows[i][1];
                 }
             }
