@@ -5,19 +5,33 @@ const { ActionRowBuilder,
     Partials } = require('discord.js');
 const fs = require('node:fs');
 const path = require('node:path');
+const axios = require('axios');
 const env = require('dotenv');
+env.config();
 const {getSheetValue} = require('./sheetinteraction.js');
 module.exports = {
-    ButtonInteraction(interaction) {
+    async ButtonInteraction(interaction) {
         if (interaction.customId === 'report_seen' && interaction.message.author.id === process.env.CLIENT_ID) {
             // clicked a button with the report seen id that was sent by my bot
             // this means I need to edit the original ephemeral message
-            getSheetValue(interaction.message.id);
-            console.log('this is the button for marking a report as seen and needs to edit the original ephemeral message for the /report command');
+            const token = await getSheetValue(interaction.message.id);
+            try {
+                axios.post(`https://discord.com/api/v10/webhooks/${process.env.CLIENT_ID}/${token}`, 
+                {content: 'A mod has seen this report', ephemeral: true, flags:64});
+                interaction.deferUpdate();
+            }
+            catch (error) {
+                console.error(error);
+                interaction.reply('unable to inform user that report is handled');
+            }
+            
+
+            // console.log('this is the button for marking a report as seen and needs to edit the original ephemeral message for the /report command');
         }
         if (interaction.customId === 'deliberate') {
             // This is the button associated with the /modreport command, and needs to edit the original embed sent with this button to now 
             // add the person who clicked to the button to the list of deliberating mods
+            interaction.deferUpdate();
             const m = interaction.message;
             const embed = m.embeds[0];
             const buttons = m.components[0];

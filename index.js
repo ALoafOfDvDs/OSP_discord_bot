@@ -49,7 +49,7 @@ client.on('ready', () => {
 
 client.on(Events.InteractionCreate, async interaction => {
 	if (interaction.isButton()) {
-		ButtonInteraction(interaction);
+		await ButtonInteraction(interaction);
 	}
 	else if (interaction.isChatInputCommand()) {
 		const command = interaction.client.commands.get(interaction.commandName);
@@ -71,29 +71,6 @@ client.on(Events.InteractionCreate, async interaction => {
 		console.log(interaction);
 	}
 
-});
-
-
-const {google} = require('googleapis');
-
-const sheet = google.sheets({
-	version:"v4",
-	auth: process.env.GOOGLE_API_KEY
-});
-
-const params = {
-	spreadsheetId: process.env.GOOGLE_TEST_SHEET_ID
-};
-
-sheet.spreadsheets.get(params, (err, res) => {
-	if (err) {
-		console.error(err);
-		throw err;
-	}
-	if(res) {
-		console.log(res);
-		// console.log(`the sheet url is ${res.data.url}`);
-	}
 });
 
 

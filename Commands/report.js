@@ -3,12 +3,11 @@ const { ActionRowBuilder,
         EmbedBuilder, 
         SlashCommandBuilder } 
         = require('discord.js');
-
+const axios = require('axios');
 const { newSheetRow } = require('../handlers/sheetinteraction');
 var moment = require('moment');
 moment().format();
 
-// const {authenticate} = require('@google-cloud/local-auth');
 const {google} = require('googleapis');
 
 module.exports = {
@@ -30,11 +29,8 @@ module.exports = {
         const reason = interaction.options.getString('reason');
         const link = interaction.user.displayAvatarURL;
 
-
-
-
-         
         await interaction.reply({content:`User reported: ${user}`, ephemeral: true});
+
         const row = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
@@ -54,14 +50,13 @@ module.exports = {
         const mod_message = await interaction.channel.send({embeds:[embedV1], components: [row]});
 
         try {
-            console.log(interaction);
-            await newSheetRow(mod_message.id, interaction);
+            console.log(interaction.token);
+            await newSheetRow(mod_message.id, interaction.token);
         }
         catch (error) {
             console.log(error);
             interaction.channel.send("failed to update google sheet");
         }
-        const m = interaction.editReply({content: 'message has been edited to say this instead', ephemeral: true});
+
 	},
-        
 };
