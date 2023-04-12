@@ -3,8 +3,6 @@ const { ActionRowBuilder,
     Client, Collection, 
     EmbedBuilder, Events, 
     Partials } = require('discord.js');
-const fs = require('node:fs');
-const path = require('node:path');
 const axios = require('axios');
 const env = require('dotenv');
 env.config();

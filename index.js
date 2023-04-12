@@ -11,6 +11,7 @@ env.config();
 
 
 const { ButtonInteraction } = require('./handlers/buttonhandler');
+const { MessageDeleted, MessageEdited } = require('./handlers/messagehandler');
 
 const client = new Client({
 	intents: [
@@ -73,5 +74,14 @@ client.on(Events.InteractionCreate, async interaction => {
 
 });
 
+/*
+Remaining commented out for the time being, would like this to be a toggleable setting
+client.on('messageDelete', message => {
+    MessageDeleted(message);
+});
 
+client.on('messageUpdate', message => {
+    MessageEdited(message);
+})
+*/
 client.login(process.env.DISCORD_TOKEN);

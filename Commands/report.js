@@ -3,10 +3,11 @@ const { ActionRowBuilder,
         EmbedBuilder, 
         SlashCommandBuilder } 
         = require('discord.js');
-const axios = require('axios');
 const { newSheetRow } = require('../handlers/sheetinteraction');
 var moment = require('moment');
 moment().format();
+const env = require('dotenv');
+env.config();
 
 const {google} = require('googleapis');
 
@@ -30,7 +31,8 @@ module.exports = {
         const link = interaction.user.displayAvatarURL;
 
         await interaction.reply({content:`User reported: ${user}`, ephemeral: true});
-
+        let mod_message = undefined;
+        let channel = undefined
         const row = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
@@ -46,15 +48,38 @@ module.exports = {
                        {name: "Time: ", value: `<t:${moment().unix()}:f>`})
 
             .setFooter({text: `Sent by ${interaction.user.username} (${interaction.user.id})`});
-        await interaction.channel.send('For the time being this message is sent in the current channel. This will be changed as we move closer to implementing this server-wide');
-        const mod_message = await interaction.channel.send({embeds:[embedV1], components: [row]});
+
+        
+        if (interaction.guild.id === process.env.OSP_GUILD_ID) {
+            channel = await interaction.guild.channels.cache.find(ch => ch.id === process.env.OSP_REPORT_CHANNEL_ID);
+            mod_message = await channel.send({embeds:[embedV1], components: [row]});
+
+        }
+        else if (interaction.guild.id === process.env.OSP_TEST_GUILD_ID) {
+        
+            channel = await interaction.guild.channels.cache.find(ch => ch.id === process.env.OSP_TEST_REPORT_CHANNEL_ID);
+            await interaction.channel.send('this report has been sent in the OSP test discord and will be sent to the robot control station');
+            mod_message = await channel.send({embeds:[embedV1], components: [row]});
+        }
+        else {
+            console.log(interaction.guild.id);
+            await interaction.channel.send('This report was sent outside of the OSP discords. The report message will be sent to this channel.');
+            mod_message = await interaction.channel.send({embeds:[embedV1], components: [row]});
+        }
+
 
         try {
             await newSheetRow(mod_message.id, interaction.token);
         }
         catch (error) {
             console.log(error);
-            interaction.channel.send("failed to update google sheet"); // probably change this for the final product
+            if (channel !== undefined){
+                channel.send("failed to update google sheet, impossible to tell user that their report has been seen");
+            }
+            else {
+                await interaction.channel.send('failed to update google sheet, impossible to tell user that their report has been seen');
+            }
+            await mod_message.edit({embeds: [embedV1],components: []});
         }
 
 	},

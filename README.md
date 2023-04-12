@@ -22,6 +22,9 @@ This module is called by the main file when a button interaction is received. It
 ### sheetinteraction.js
 This module is used to interact with a google sheet. The interactions with the google sheet are currently hardcoded so it interacts with a particular sheet. This is necessary to allow the "/report" command to work fully, as it relies on a google sheet as a database to store and track specific data. 
 
+### messagehandler.js
+This module is used to handle any direct interactions with a message. This means deleting or editing a message is handled by this module.
+
 ### slashcommandhandler.js
 This module is unnecessary and will be removed. 
 
@@ -35,3 +38,5 @@ Implementation of the "/getlogs" command. This will allow a moderator to retriev
 ### modreport.js
 Implementation of the "/modreport" command. This creates an embed to help moderators keep track of what case they are handling, as well as who is participating in the deliberation process
 
+### bulkdelete.js
+Implementation of "/bulkdelete" command. This will take a certain number of messages in the specified channel, or current channel if none specified, and delete that many messages from the channel
