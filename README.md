@@ -40,3 +40,9 @@ Implementation of the "/modreport" command. This creates an embed to help modera
 
 ### bulkdelete.js
 Implementation of "/bulkdelete" command. This will take a certain number of messages in the specified channel, or current channel if none specified, and delete that many messages from the channel
+
+### revelerevent.js
+Implementation of the "/revelerevent" command. This will take the type of event that is about to happen, and then edit event channel permissions to unlock them for general admission. 
+
+### revelereventreset.js
+Implementation of the "/revelereventreset" command. This will immediately reset the event channel permissions to a locked state. 

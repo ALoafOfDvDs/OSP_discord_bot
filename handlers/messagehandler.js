@@ -11,7 +11,7 @@ env.config();
 
 module.exports = {
     async MessageDeleted(message) {
-        channel = await interaction.guild.channels.cache.find(ch => ch.id === process.env.OSP_TEST_REPORT_CHANNEL_ID);
+        const channel = await interaction.guild.channels.cache.find(ch => ch.id === process.env.OSP_TEST_REPORT_CHANNEL_ID);
         
         const embed = new EmbedBuilder()
         .setAuthor({name: `${message.author.tag}`, iconURL: `${message.author.displayAvatarURL()}`})
@@ -22,7 +22,7 @@ module.exports = {
         channel.send({embeds: [embed]});
     },
     async MessageEdited(message) {
-        channel = await interaction.guild.channels.cache.find(ch => ch.id === process.env.OSP_TEST_REPORT_CHANNEL_ID);
+        const channel = await interaction.guild.channels.cache.find(ch => ch.id === process.env.OSP_TEST_REPORT_CHANNEL_ID);
         
         // link to message: https://discord.com/channels/guildId/channelId/messageId 
         // link should be `https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id}`
