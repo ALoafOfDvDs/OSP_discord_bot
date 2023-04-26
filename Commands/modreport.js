@@ -4,6 +4,7 @@ const { ActionRowBuilder,
     SlashCommandBuilder } 
     = require('discord.js');
 var moment = require('moment');
+const { deliberation_channel_1_id, deliberation_channel_2_id } = require('../const/channelid');
 moment().format();
 
 module.exports = {
@@ -21,13 +22,19 @@ data: new SlashCommandBuilder()
             .setRequired(true)  
     ),
 
-    async execute(interaction) {
-        console.log(interaction.channel.id);
-        if (interaction.channel.id !== '1023378368923697274') {
-            await interaction.reply({content:`Warning, this command is for staff members only`, ephemeral: true});
-            console.log('wrong channel')
+    async execute({interaction, isMod}) {
+        if (!isMod) {
+            // unauthorized person calling the command
+            console.log(`Bad Actor tried to create a modreport\n
+                         ${interaction.user.username} | ${interaction.user.id}`);
             return;
         }
+        if (interaction.channel.id !== deliberation_channel_1_id && interaction.channel.id !== deliberation_channel_2_id) {
+            // not in either of the proper channels
+            await interaction.reply('This command must be called in one of the table channels.');
+            return;
+        }
+        
         const user = interaction.options.getUser('user');
         const reason = interaction.options.getString('reason');    
 

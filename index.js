@@ -9,6 +9,7 @@ const path = require('node:path');
 const env = require('dotenv');
 env.config();
 
+const {check_mod} = require('./handlers/slashcommandhandler');
 
 const { ButtonInteraction } = require('./handlers/buttonhandler');
 const { MessageDeleted, MessageEdited } = require('./handlers/messagehandler');
@@ -60,7 +61,10 @@ client.on(Events.InteractionCreate, async interaction => {
 		}
 
 		try {
-			await command.execute(interaction);
+            const guild = client.guilds.fetch(interaction.guild.id);
+            const roles = (guild.member(interaction.user.id)).roles.cache;
+            const isMod = roles.some(check_mod);
+			await command.execute({interaction, isMod});
 		}
 		catch (error) {
 			console.error(error);

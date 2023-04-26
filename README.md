@@ -26,7 +26,7 @@ This module is used to interact with a google sheet. The interactions with the g
 This module is used to handle any direct interactions with a message. This means deleting or editing a message is handled by this module.
 
 ### slashcommandhandler.js
-This module is unnecessary and will be removed. 
+This module houses functions necessary for checks that may be used in multiple slash commands. 
 
 ## Commands
 ### report.js
@@ -46,3 +46,7 @@ Implementation of the "/revelerevent" command. This will take the type of event 
 
 ### revelereventreset.js
 Implementation of the "/revelereventreset" command. This will immediately reset the event channel permissions to a locked state. 
+
+## const
+### channelid.js
+This file contains all of the const variables referencing various channel ids for both the testing and production discord servers. 

@@ -4,16 +4,23 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('bulkdelete')
     .setDescription('Deletes a number of messages in the given channel')
-    .addChannelOption(option => 
-        option.setName('channel')
-        .setDescription('channel to purge messages from')
-        .setRequired(false))
     .addIntegerOption(option =>
         option.setName('count')
         .setDescription('number of messages to purge')
-        .setRequired(true)),
+        .setRequired(true))
+    .addChannelOption(option => 
+        option.setName('channel')
+        .setDescription('channel to purge messages from')
+        .setRequired(false)),
 
-    async execute(interaction) {
+    async execute({interaction, isMod}) {
+
+        if (!isMod) {
+            // unauthorized person calling the command
+            console.log(`Bad Actor tried to unlock reveler channels\n
+                         ${interaction.user.username} | ${interaction.user.id}`);
+            return;
+        }
         const channel = interaction.getChannel('channel');
         if (channel === undefined) {
             channel = interaction.channel;

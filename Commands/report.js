@@ -9,7 +9,7 @@ moment().format();
 const env = require('dotenv');
 env.config();
 
-const {google} = require('googleapis');
+const { report_channel_id } = require('../const/channelid');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -25,7 +25,7 @@ module.exports = {
                 .setDescription('Reason for report')
                 .setRequired(true)  
         ),
-	async execute(interaction) {
+	async execute({interaction}) {
         const user = interaction.options.getUser('user');
         const reason = interaction.options.getString('reason');
         const link = interaction.user.displayAvatarURL;
@@ -51,13 +51,13 @@ module.exports = {
 
         
         if (interaction.guild.id === process.env.OSP_GUILD_ID) {
-            channel = await interaction.guild.channels.cache.find(ch => ch.id === process.env.OSP_REPORT_CHANNEL_ID);
+            channel = await interaction.guild.channels.cache.find(ch => ch.id === report_channel_id);
             mod_message = await channel.send({embeds:[embedV1], components: [row]});
 
         }
         else if (interaction.guild.id === process.env.OSP_TEST_GUILD_ID) {
         
-            channel = await interaction.guild.channels.cache.find(ch => ch.id === process.env.OSP_TEST_REPORT_CHANNEL_ID);
+            channel = await interaction.guild.channels.cache.find(ch => ch.id === report_channel_id);
             await interaction.channel.send('this report has been sent in the OSP test discord and will be sent to the robot control station');
             mod_message = await channel.send({embeds:[embedV1], components: [row]});
         }
