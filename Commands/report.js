@@ -9,7 +9,7 @@ moment().format();
 const env = require('dotenv');
 env.config();
 
-const { report_channel_id } = require('../const/channelid');
+const { REPORT_CHANNEL_ID } = require('../const/channelid');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -32,7 +32,7 @@ module.exports = {
 
         await interaction.reply({content:`User reported: ${user}`, ephemeral: true});
         let mod_message = undefined;
-        let channel = undefined
+        let channel = undefined;
         const row = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
@@ -51,7 +51,7 @@ module.exports = {
 
         
         if (interaction.guild.id === process.env.OSP_GUILD_ID) {
-            channel = await interaction.guild.channels.cache.find(ch => ch.id === report_channel_id);
+            channel = await interaction.guild.channels.cache.find(ch => ch.id === REPORT_CHANNEL_ID);
             mod_message = await channel.send({embeds:[embedV1], components: [row]});
 
         }

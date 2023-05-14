@@ -4,15 +4,17 @@ const { ActionRowBuilder,
 		EmbedBuilder, Events, 
 		GatewayIntentBits, 
 		Partials } = require('discord.js');
+const { google } = require('googleapis');
 const fs = require('node:fs');
 const path = require('node:path');
 const env = require('dotenv');
 env.config();
 
-const {check_mod} = require('./handlers/slashcommandhandler');
+const {check_mod, check_team_lead} = require('./handlers/slashcommandhandler');
 
 const { ButtonInteraction } = require('./handlers/buttonhandler');
 const { MessageDeleted, MessageEdited } = require('./handlers/messagehandler');
+const { oAuth2Client } = require('./handlers/sheetinteraction');
 
 const client = new Client({
 	intents: [
@@ -20,6 +22,7 @@ const client = new Client({
 		GatewayIntentBits.GuildMessages,
 		GatewayIntentBits.MessageContent,
 		GatewayIntentBits.GuildMessageReactions,
+        GatewayIntentBits.GuildMembers,
 	] }, {
 	partials: [
 		Partials.Message, 
@@ -61,8 +64,10 @@ client.on(Events.InteractionCreate, async interaction => {
 		}
 
 		try {
-            const guild = client.guilds.fetch(interaction.guild.id);
-            const roles = (guild.member(interaction.user.id)).roles.cache;
+            const guild = await client.guilds.fetch(interaction.guild.id);
+
+            const member = await guild.members.fetch({user:`${interaction.user.id}`, force:true});
+            const roles = member.roles.cache;
             const isMod = roles.some(check_mod);
 			await command.execute({interaction, isMod});
 		}
@@ -89,3 +94,14 @@ client.on('messageUpdate', message => {
 })
 */
 client.login(process.env.DISCORD_TOKEN);
+
+
+oAuth2Client.on('tokens', (tokens) => {
+    let token = JSON.parse(fs.readFileSync('google-oauth-token.json'));
+    token.access_token = tokens.access_token;
+    if (tokens.refresh_token) {
+        token.refresh_token = tokens.refresh_token;
+    }
+
+    fs.writeFileSync('google-oauth-token.json', JSON.stringify(token));
+});

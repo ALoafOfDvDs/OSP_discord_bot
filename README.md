@@ -47,6 +47,21 @@ Implementation of the "/revelerevent" command. This will take the type of event 
 ### revelereventreset.js
 Implementation of the "/revelereventreset" command. This will immediately reset the event channel permissions to a locked state. 
 
+### help.js
+Implementation of the "/help" command. This command will display to the caller the functionality of the discord bot. 
+
+### addmod.js
+Implementation of the "/addmod" command. This command will require knowing a specific user, their status as a moderator, their access permissions to specific google sheets, and their email address. It will use these values to add that user's email address to a list of addresses that have been given permissions to view and/or edit particular google sheets, as well as give them those permissions. 
+
+### removemod.js
+Implementation of the "/removemod" command. This command asks for a particular user. It will then attempt to find that user in the database full of users who have access to google sheets. If found, the user will have all their access permissions revoked, and will be deleted from the sheet. 
+
+### seegooglepermissions.js
+Implementation of the "/seegooglepermissions.js" command. This command will ask for a particular user. It will then attempt to find that user in the database full of users who have access to google sheets. If found, the command will reply listing out what sheets that user has access to, as well as what permissions they have. 
+
 ## const
 ### channelid.js
 This file contains all of the const variables referencing various channel ids for both the testing and production discord servers. 
+
+### paths.js
+This file contains all of the paths to various files
