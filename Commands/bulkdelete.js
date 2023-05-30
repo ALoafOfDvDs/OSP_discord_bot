@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
+const { MOD_BOT_CHANNEL_ID } = require('../const/channelid');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -21,12 +22,12 @@ module.exports = {
                          ${interaction.user.username} | ${interaction.user.id}`);
             return;
         }
-        const channel = interaction.getChannel('channel');
-        if (channel === undefined) {
+        let channel = interaction.options.getChannel('channel');
+        if (channel === null || channel === undefined) {
             channel = interaction.channel;
         }
-        const count = interaction.getInteger('count');
-        const mod_channel = await interaction.guild.channels.cache.find(ch => ch.id === process.env.OSP_TEST_REPORT_CHANNEL_ID);
+        const count = interaction.options.getInteger('count');
+        const mod_channel = await interaction.guild.channels.cache.find(ch => ch.id === MOD_BOT_CHANNEL_ID);
 
         if (count > 100) {
             let num_to_del = count;

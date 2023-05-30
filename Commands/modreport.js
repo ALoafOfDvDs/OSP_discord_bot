@@ -4,7 +4,7 @@ const { ActionRowBuilder,
     SlashCommandBuilder } 
     = require('discord.js');
 var moment = require('moment');
-const { deliberation_channel_1_id, deliberation_channel_2_id } = require('../const/channelid');
+const { DELIBERATION_CHANNEL_1_ID, DELIBERATION_CHANNEL_2_ID } = require('../const/channelid');
 moment().format();
 
 module.exports = {
@@ -25,11 +25,12 @@ data: new SlashCommandBuilder()
     async execute({interaction, isMod}) {
         if (!isMod) {
             // unauthorized person calling the command
+            await interaction.reply({content: 'Only moderators can call this command', ephemeral: true});
             console.log(`Bad Actor tried to create a modreport\n
                          ${interaction.user.username} | ${interaction.user.id}`);
             return;
         }
-        if (interaction.channel.id !== deliberation_channel_1_id && interaction.channel.id !== deliberation_channel_2_id) {
+        if (interaction.channel.id !== DELIBERATION_CHANNEL_1_ID && interaction.channel.id !== DELIBERATION_CHANNEL_2_ID) {
             // not in either of the proper channels
             await interaction.reply('This command must be called in one of the table channels.');
             return;
