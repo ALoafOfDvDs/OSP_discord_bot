@@ -7,6 +7,7 @@ const axios = require('axios');
 const env = require('dotenv');
 env.config();
 const {getSheetValue} = require('./sheetinteraction.js');
+const { BOT_DESCRIPTION_HELP_EMBED, PREV_PAGE_HELP_BUTTON, MOD_SAFE_HELP_EMBED, NEXT_PAGE_HELP_BUTTON } = require('../const/helppages.js');
 module.exports = {
     async ButtonInteraction(interaction) {
         if (interaction.customId === 'report_seen' && interaction.message.author.id === process.env.CLIENT_ID) {
@@ -46,6 +47,20 @@ module.exports = {
                 }
             }
             m.edit({embeds:[new_embed], components:[buttons]});
+        }
+        if (interaction.customId === 'description_bot') {
+            // edit the message to show the description of the bot.
+            interaction.deferUpdate();
+            const m = interaction.message;
+            m.edit({embeds: [BOT_DESCRIPTION_HELP_EMBED], components: [PREV_PAGE_HELP_BUTTON]});
+        }
+        if (interaction.customId === 'description_commands') {
+            // edit the message to show the description of the commands
+            // button only appears on bot description page, and bot description page can only be found by mods
+            // this can then be mod safe
+            interaction.deferUpdate();
+            const m = interaction.message;
+            m.edit({embeds: [MOD_SAFE_HELP_EMBED], components: [NEXT_PAGE_HELP_BUTTON]});
         }
     }
 }
