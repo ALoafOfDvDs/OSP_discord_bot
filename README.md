@@ -65,3 +65,9 @@ This file contains all of the const variables referencing various channel ids fo
 
 ### paths.js
 This file contains all of the paths to various files
+
+### helppages.js
+This file contains all embeds for the /help command
+
+### googlepermissions.js
+This file contains the macros and the list to convert from the access string to the associated number and back to more easily track access permissions within the google sheet
